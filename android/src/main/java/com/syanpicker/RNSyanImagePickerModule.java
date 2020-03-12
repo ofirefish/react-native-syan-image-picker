@@ -4,6 +4,7 @@ package com.syanpicker;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -23,6 +24,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.style.PictureParameterStyle;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.syanpicker.GlideEngine;
 
@@ -160,6 +162,7 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
         int minimumCompressSize = this.cameraOptions.getInt("minimumCompressSize");
         int quality = this.cameraOptions.getInt("quality");
         boolean isWeChatStyle = this.cameraOptions.getBoolean("isWeChatStyle");
+        boolean isOpenCheckNumStyle = this.cameraOptions.getBoolean("isOpenCheckNumStyle");
 
         int modeValue;
         if (imageCount == 1) {
@@ -169,6 +172,18 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
         }
 
         Activity currentActivity = getCurrentActivity();
+        PictureParameterStyle pps = new PictureParameterStyle();
+        pps.isOpenCheckNumStyle = isOpenCheckNumStyle;
+        if(isOpenCheckNumStyle)
+            pps.pictureCheckedStyle = R.drawable.picture_wechat_num_selector;
+        if(isWeChatStyle){
+            pps.isChangeStatusBarFontColor  = false;
+            pps.isOpenCompletedNumStyle = false;
+            pps.pictureStatusBarColor = Color.parseColor("#393a3e");
+            // 相册列表标题栏背景色
+            pps.pictureTitleBarBackgroundColor = Color.parseColor("#393a3e");
+        }
+
         PictureSelector.create(currentActivity)
                 .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .loadImageEngine(GlideEngine.createGlideEngine())
@@ -201,6 +216,7 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
                 .scaleEnabled(scaleEnabled)// 裁剪是否可放大缩小图片 true or false
                 .selectionMedia(selectList) // 当前已选中的图片 List
                 .isWeChatStyle(isWeChatStyle)
+                .setPictureStyle(pps)
                 .forResult(PictureConfig.CHOOSE_REQUEST); //结果回调onActivityResult code
     }
 

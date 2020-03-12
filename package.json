@@ -1,8 +1,8 @@
 
 {
-  "name": "react-native-syan-image-picker",
-  "version": "0.4.6",
-  "description": "React-Native 多图片选择 支持裁剪 压缩",
+  "name": "react-native-syan-image-picker-zzly",
+  "version": "1.0.1",
+  "description": "React-Native 多图片选择 支持裁剪 压缩 支持QQ风格带数字选取",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
